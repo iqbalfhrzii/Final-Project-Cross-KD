@@ -1,34 +1,36 @@
-# 📊 Dataset RDD2022 (Road Damage Dataset 2022)
+# Dataset RDD2022 (Preprocessed & Augmented)
 
-Repositori ini menggunakan dataset sekunder dari **Crowdsensing-based Road Damage Detection Challenge 2022 (RDD2022)** yang mencakup citra anomali permukaan jalan dari berbagai negara.
+Direktori ini menyimpan konfigurasi dan panduan penyiapan **Road Damage Dataset 2022 (RDD2022)** yang telah melalui tahapan pemfilteran kelas, pra-pengolahan citra (*CLAHE & Resize*), serta augmentasi data *offline* untuk penelitian Tugas Akhir.
 
 ---
 
 ## 🔗 Tautan Unduh Dataset Lengkap
-Karena ukuran dataset penuh mencapai **13,5 GB** (melebihi batas kuota penyimpanan repositori GitHub), dataset lengkap yang telah difilter dan diaugmentasi dapat diunduh langsung melalui Google Drive resmi penelitian berikut:
+
+Karena ukuran dataset penuh mencapai **13,5 GB** (melebihi batas penyimpanan standar repositori GitHub), dataset lengkap yang telah diproses dan siap latih dapat diunduh melalui Google Drive resmi penelitian berikut:
 
 👉 **[Unduh Dataset RDD2022 Lengkap di Google Drive](https://drive.google.com/drive/folders/1UsrzEdO3pofb4GKN_XoiWIE5X5vvYEFK?usp=sharing)**
 
-Berkas zip di Google Drive:
-* `dataset_rdd2022_augmented.zip` (Dataset utama siap latih: 4 kelas + CLAHE + Augmentasi rotasi/flip/brightness).
+Berkas arsip di Google Drive:
+- `dataset_rdd2022_augmented.zip` — Dataset siap latih (4 kelas utama + CLAHE + Resize 640×640 + Augmentasi *offline* pada split *train*).
 
 ---
 
-## 🗂️ Struktur Direktori Dataset
-Setelah berkas zip diekstrak, letakkan isi folder sehingga membentuk hierarki berikut di dalam folder `Dataset/`:
+## 📁 Struktur Direktori Dataset
+
+Setelah berkas `.zip` diekstrak, letakkan folder `images/` dan `labels/` ke dalam direktori `Dataset/` sehingga membentuk struktur berikut:
 
 ```text
 Dataset/
-├── data.yaml
-├── README.md
+├── data.yaml             # Konfigurasi path dan daftar 4 kelas untuk YOLOv8
+├── README.md             # Dokumentasi dataset
 ├── images/
-│   ├── train/     # 17.271 citra latihan
-│   ├── val/       #  5.758 citra validasi
-│   └── test/      #  5.757 citra pengujian
+│   ├── train/            # 62.673 citra latih (pasca-augmentasi offline)
+│   ├── val/              # 5.758 citra validasi (murni tanpa augmentasi)
+│   └── test/             # 5.758 citra pengujian (murni tanpa augmentasi)
 └── labels/
-    ├── train/     # 17.271 file anotasi .txt
-    ├── val/       #  5.758 file anotasi .txt
-    └── test/      #  5.757 file anotasi .txt
+    ├── train/            # 62.673 berkas anotasi .txt (142.504 bounding box)
+    ├── val/              # 5.758 berkas anotasi .txt (9.366 bounding box)
+    └── test/             # 5.758 berkas anotasi .txt (9.324 bounding box)
 ```
 
 ---
