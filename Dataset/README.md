@@ -11,7 +11,7 @@ Karena ukuran dataset penuh mencapai **13,5 GB** (melebihi batas penyimpanan sta
 **[Unduh Dataset RDD2022 Lengkap di Google Drive](https://drive.google.com/drive/folders/1UsrzEdO3pofb4GKN_XoiWIE5X5vvYEFK?usp=sharing)**
 
 Berkas arsip di Google Drive:
-- `dataset_rdd2022_augmented.zip` — Dataset siap latih (4 kelas utama + CLAHE + Resize 640×640 + Augmentasi *offline* pada split *train*).
+- `dataset_rdd2022_augmented.zip` - Dataset siap latih (4 kelas utama + CLAHE + Resize 640×640 + Augmentasi *offline* pada split *train*).
 
 ---
 
