@@ -12,7 +12,7 @@ Repositori ini memuat kode sumber resmi, konfigurasi eksperimen, dan dokumentasi
 
 ---
 
-## 📌 Ringkasan Penelitian
+## Ringkasan Penelitian
 
 Penelitian ini mengimplementasikan metode **Cross-Head Knowledge Distillation (CrossKD)** untuk mentransfer representasi fitur spasial dan prediksi *detection head* dari model guru berkapasitas besar (*Teacher* — **YOLOv8m**, 25,8 juta parameter) ke model murid berarsitektur ringkas (*Student* — **YOLOv8n**, 3,2 juta parameter) dalam mendeteksi empat kategori kerusakan jalan pada dataset multinasional **RDD2022**:
 
@@ -28,7 +28,7 @@ Penelitian ini mengimplementasikan metode **Cross-Head Knowledge Distillation (C
 
 ---
 
-## 🗂️ Struktur Direktori Repositori
+## Struktur Direktori Repositori
 
 ```text
 Final-Project-Cross-KD/
@@ -59,7 +59,7 @@ Final-Project-Cross-KD/
 
 ---
 
-## 🚀 Panduan Instalasi dan Penggunaan
+## Panduan Instalasi dan Penggunaan
 
 ### 1. Kloning Repositori
 ```bash
@@ -105,7 +105,7 @@ Seluruh eksperimen dilatih menggunakan konfigurasi standar (`imgsz=640`, `epochs
 
 ---
 
-## 📊 Ringkasan Hasil Eksperimen
+## Ringkasan Hasil Eksperimen
 
 Evaluasi dilakukan pada partisi validasi murni dataset RDD2022 (5.758 citra) dengan ukuran masukan `640 × 640` piksel:
 
@@ -118,7 +118,7 @@ Evaluasi dilakukan pada partisi validasi murni dataset RDD2022 (5.758 citra) den
 
 ---
 
-## 💻 Lingkungan Komputasi Eksperimen
+## Lingkungan Komputasi Eksperimen
 
 - **GPU:** NVIDIA GeForce RTX 4090 (24 GB GDDR6X)
 - **CPU:** AMD Ryzen 9 7950X3D (16 Cores, 32 Threads)

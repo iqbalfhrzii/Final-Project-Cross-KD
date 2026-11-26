@@ -4,18 +4,18 @@ Direktori ini menyimpan konfigurasi dan panduan penyiapan **Road Damage Dataset 
 
 ---
 
-## 🔗 Tautan Unduh Dataset Lengkap
+## Tautan Unduh Dataset Lengkap
 
 Karena ukuran dataset penuh mencapai **13,5 GB** (melebihi batas penyimpanan standar repositori GitHub), dataset lengkap yang telah diproses dan siap latih dapat diunduh melalui Google Drive resmi penelitian berikut:
 
-👉 **[Unduh Dataset RDD2022 Lengkap di Google Drive](https://drive.google.com/drive/folders/1UsrzEdO3pofb4GKN_XoiWIE5X5vvYEFK?usp=sharing)**
+**[Unduh Dataset RDD2022 Lengkap di Google Drive](https://drive.google.com/drive/folders/1UsrzEdO3pofb4GKN_XoiWIE5X5vvYEFK?usp=sharing)**
 
 Berkas arsip di Google Drive:
 - `dataset_rdd2022_augmented.zip` — Dataset siap latih (4 kelas utama + CLAHE + Resize 640×640 + Augmentasi *offline* pada split *train*).
 
 ---
 
-## 📁 Struktur Direktori Dataset
+## Struktur Direktori Dataset
 
 Setelah berkas `.zip` diekstrak, letakkan folder `images/` dan `labels/` ke dalam direktori `Dataset/` sehingga membentuk struktur berikut:
 
@@ -35,7 +35,7 @@ Dataset/
 
 ---
 
-## 🏷️ Spesifikasi 4 Kelas Kerusakan Jalan
+## Spesifikasi 4 Kelas Kerusakan Jalan
 
 Dataset mentah RDD2022 yang semula memuat kelas tambahan (*Other Corruption / Repair*) diproses ulang menggunakan skrip `Source Code/process_rdd2022.py` untuk mengeliminasi kelas di luar fokus penelitian dan memetakan ulang (*remapping*) indeks kelas ke rentang `0–3` sesuai standar *benchmark* internasional RDD2022:
 
@@ -50,7 +50,7 @@ Dataset mentah RDD2022 yang semula memuat kelas tambahan (*Other Corruption / Re
 
 ---
 
-## ⚙️ Rangkuman Pipeline Pengolahan & Statistik Data
+## Rangkuman Pipeline Pengolahan & Statistik Data
 
 Seluruh pemrosesan citra dilakukan menggunakan skrip `Source Code/preprocess_and_augment.py` dengan tahapan:
 - **Enhancement (CLAHE):** Diterapkan secara eksklusif pada kanal *Luminance* (`L`) dalam ruang warna `LAB` dengan parameter `clipLimit = 2.0` dan `tileGridSize = (8, 8)` untuk memperjelas tekstur retakan tanpa merusak informasi warna alami.
@@ -68,7 +68,7 @@ Seluruh pemrosesan citra dilakukan menggunakan skrip `Source Code/preprocess_and
 
 ---
 
-## 📚 Sitasi Dataset Asli
+## Sitasi Dataset Asli
 
 Apabila menggunakan dataset ini, harap menyertakan sitasi sumber asli RDD2022:
 
