@@ -4,9 +4,9 @@ Repositori ini memuat kode sumber resmi dan konfigurasi dataset untuk penelitian
 
 * **Peneliti:** Iqbal Fahrozi (NIM: 11221034)  
 * **Program Studi:** Informatika  
-* **Jurusan:** Jurusan Matematika dan Teknologi Informasi  
+* **Jurusan:** Jurusan Teknik Elektro, Informatika, dan Bisnis (JTEIB)  
+* **Fakultas:** Fakultas Sains dan Teknologi Informasi (FSTI)  
 * **Institusi:** Institut Teknologi Kalimantan (ITK)  
-* **Dosen Pembimbing:** Bima Sena Bayu Dewantara, S.T., M.T., Ph.D.  
 
 ---
 
@@ -74,7 +74,7 @@ pip install -r requirements.txt
 ```
 
 ### 3. Persiapan Dataset
-Dataset RDD2022 lengkap (~14 GB) dapat diunduh melalui tautan Google Drive yang tercantum pada [Dataset/README.md](Dataset/README.md). Setelah diekstrak, letakkan folder `images/` dan `labels/` di dalam direktori `Dataset/`.
+Dataset RDD2022 lengkap (13,5 GB) dapat diunduh melalui tautan Google Drive yang tercantum pada [Dataset/README.md](Dataset/README.md). Setelah diekstrak, letakkan folder `images/` dan `labels/` di dalam direktori `Dataset/`.
 
 ### 4. Menjalankan Pelatihan Model
 Pelatihan model dikontrol melalui berkas `Source Code/main.py`. Anda dapat memilih mode pelatihan dengan mengubah variabel `STAGE` atau menggunakan argumen:
@@ -109,7 +109,3 @@ python test_predict.py --model crosskd --source path/to/image.jpg --conf 0.25
 | **Student Baseline (Tanpa KD)** | YOLOv8n | 3,2 M | 8,7 | 66,55% | 59,57% | 65,01% | 36,03% |
 | **Student CrossKD (Hasil Usulan)**| **YOLOv8n** | **3,2 M** | **8,7** | **67,17%** | **59,75%** | **65,56%** | **36,27%** |
 
----
-
-## 📜 Lisensi & Pengutipan
-Kode program pada repositori ini dikembangkan untuk kepentingan akademik dan penelitian skripsi di bawah bimbingan Program Studi Informatika ITK. Referensi dasar implementasi distilasi merujuk pada penelitian *Cross-Head Knowledge Distillation for Object Detection*.

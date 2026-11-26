@@ -5,7 +5,7 @@ Repositori ini menggunakan dataset sekunder dari **Crowdsensing-based Road Damag
 ---
 
 ## 🔗 Tautan Unduh Dataset Lengkap
-Karena ukuran dataset penuh mencapai **~14 GB** (melebihi batas kuota penyimpanan repositori GitHub), dataset lengkap yang telah difilter dan diaugmentasi dapat diunduh langsung melalui Google Drive resmi penelitian berikut:
+Karena ukuran dataset penuh mencapai **13,5 GB** (melebihi batas kuota penyimpanan repositori GitHub), dataset lengkap yang telah difilter dan diaugmentasi dapat diunduh langsung melalui Google Drive resmi penelitian berikut:
 
 👉 **[Unduh Dataset RDD2022 Lengkap di Google Drive](https://drive.google.com/drive/folders/1UsrzEdO3pofb4GKN_XoiWIE5X5vvYEFK?usp=sharing)**
 
