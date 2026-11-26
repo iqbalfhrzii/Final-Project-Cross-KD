@@ -111,10 +111,10 @@ Evaluasi dilakukan pada partisi validasi murni dataset RDD2022 (5.758 citra) den
 
 | Model | Arsitektur | Parameter | GFLOPs | Precision (P) | Recall (R) | mAP@50 | mAP@50-95 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Teacher Standar (Exp 1)** | YOLOv8m | 25,8 M | 78,7 | 0,6512 | 0,5821 | 66,54% | 37,80% |
-| **Teacher Optimized (Exp 2)** | YOLOv8m | 25,8 M | 78,7 | 0,6766 | 0,6301 | **67,63%** | **38,47%** |
-| **Student Baseline (Tanpa KD)** | YOLOv8n | 3,0 M | 8,1 | 0,6655 | 0,5976 | 65,01% | 36,03% |
-| **Student CrossKD (Usulan)** | **YOLOv8n** | **3,0 M** | **8,1** | **0,6717** | **0,5975** | **65,56%** | **36,27%** |
+| **Teacher Standar (Exp 1)** | YOLOv8m | 25,8 M | 78,7 | 65,12% | 58,21% | 66,54% | 37,80% |
+| **Teacher Optimized (Exp 2)** | YOLOv8m | 25,8 M | 78,7 | 67,66% | 63,01% | **67,63%** | **38,47%** |
+| **Student Baseline (Tanpa KD)** | YOLOv8n | 3,0 M | 8,1 | 66,55% | 59,76% | 65,01% | 36,03% |
+| **Student CrossKD (Usulan)** | **YOLOv8n** | **3,0 M** | **8,1** | **67,17%** | **59,75%** | **65,56%** | **36,27%** |
 
 ---
 
