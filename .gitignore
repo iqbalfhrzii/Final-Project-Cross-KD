@@ -1,0 +1,39 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual Environment
+venv/
+env/
+.env/
+ENV/
+
+# IDE & Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Large Datasets & Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+dataset_rdd2022_augmented/
+dataset_rdd2022_filtered/
+RDD_SPLIT/
+Dataset/images/
+Dataset/labels/
+
+# Training Outputs & Checkpoints
+runs/
+*.log
+
+# PyTorch weights (ignore trained runs, but keep official pretrained weights)
+*.pt
+!Source Code/PretrainedModelFromOfficial/*.pt

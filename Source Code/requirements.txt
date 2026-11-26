@@ -1,0 +1,23 @@
+# Core Deep Learning & Computer Vision
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.23.5,<2.0.0
+opencv-python>=4.8.0
+pillow>=9.5.0
+scipy>=1.10.0
+
+# Data Analysis & Visualization
+pandas>=2.0.0
+matplotlib>=3.6.0
+seaborn>=0.12.0
+
+# Training Utilities & Augmentation
+pyyaml>=6.0
+tqdm>=4.65.0
+scikit-learn>=1.3.0
+albumentations>=1.3.0
+thop>=0.1.1
+timm>=0.9.0
+
+# Model Explainability (Grad-CAM)
+grad-cam>=1.4.0

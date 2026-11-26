@@ -1,0 +1,21 @@
+# ==============================================================================
+# Konfigurasi Dataset RDD2022 (Road Damage Dataset 2022 - 4 Kelas)
+# Tugas Akhir: Deteksi Kerusakan Jalan Menggunakan Cross-Head Knowledge Distillation (YOLOv8)
+# Peneliti   : Iqbal Fahrozi (11221034) - Informatika ITK
+# ==============================================================================
+
+# Path direktori dataset (relatif terhadap direktori eksekusi skrip atau absolut)
+path: ../Dataset
+train: images/train
+val: images/val
+test: images/test
+
+# Jumlah Kelas Kerusakan Jalan
+nc: 4
+
+# Identitas Kelas dan Kategori Kerusakan
+names:
+  0: D00  # Longitudinal Crack (Retak Memanjang)
+  1: D10  # Transverse Crack (Retak Melintang)
+  2: D20  # Alligator Crack (Retak Buaya)
+  3: D40  # Pothole (Lubang Jalan)
