@@ -72,4 +72,4 @@ Seluruh pemrosesan citra dilakukan menggunakan skrip `Source Code/preprocess_and
 
 Apabila menggunakan dataset ini, harap menyertakan sitasi sumber asli RDD2022:
 
-> Arya, D., Maeda, H., Sekimoto, Y., Ghosh, S. K., & Toshniwal, D. (2022). *RDD2022: A Multi-National Image Dataset for Automatic Road Damage Detection*. figshare. https://doi.org/10.6084/m9.figshare.19425179
+> Arya, D., Maeda, H., Sekimoto, Y., Ghosh, S. K., & Toshniwal, D. (2022). *RDD2022: A Multi-National Image Dataset for Automatic Road Damage Detection*. https://doi.org/10.1002/gdj3.260
