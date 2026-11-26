@@ -14,7 +14,7 @@ Repositori ini memuat kode sumber resmi, konfigurasi eksperimen, dan dokumentasi
 
 ## Ringkasan Penelitian
 
-Penelitian ini mengimplementasikan metode **Cross-Head Knowledge Distillation (CrossKD)** untuk mentransfer representasi fitur spasial dan prediksi *detection head* dari model guru berkapasitas besar (*Teacher* — **YOLOv8m**, 25,8 juta parameter) ke model murid berarsitektur ringkas (*Student* — **YOLOv8n**, 3,2 juta parameter) dalam mendeteksi empat kategori kerusakan jalan pada dataset multinasional **RDD2022**:
+Penelitian ini mengimplementasikan metode **Cross-Head Knowledge Distillation (CrossKD)** untuk mentransfer representasi fitur spasial dan prediksi *detection head* dari model guru berkapasitas besar (*Teacher* — **YOLOv8m**, 25,8 juta parameter) ke model murid berarsitektur ringkas (*Student* — **YOLOv8n**, 3,0 juta parameter) dalam mendeteksi empat kategori kerusakan jalan pada dataset multinasional **RDD2022**:
 
 1. **D00:** Retak Memanjang (*Longitudinal Crack*)
 2. **D10:** Retak Melintang (*Transverse Crack*)
@@ -24,7 +24,7 @@ Penelitian ini mengimplementasikan metode **Cross-Head Knowledge Distillation (C
 ### Temuan Utama:
 - **Peningkatan Akurasi Deteksi:** Model *Student CrossKD* meraih **mAP@50 sebesar 65,56%** dan **mAP@50-95 sebesar 36,27%**, meningkat **+0,55%** dibandingkan model *Student Baseline* yang dilatih mandiri tanpa distilasi (65,01% mAP@50).
 - **Retensi Performa Model Guru:** Model murid mampu mempertahankan **96,94%** performa deteksi model *Teacher Optimized* (67,63% mAP@50), melampaui target minimal retensi performa sebesar 90%.
-- **Efisiensi Komputasi Tinggi:** Model *Student CrossKD* memangkas jumlah parameter sebesar **87,6%** (dari 25,8 juta menjadi **3,2 juta parameter**) dan mengurangi beban komputasi dari 79,1 GFLOPs menjadi **8,7 GFLOPs**, sehingga sangat layak diimplementasikan pada perangkat dengan keterbatasan sumber daya komputasi (*edge devices*).
+- **Efisiensi Komputasi Tinggi:** Model *Student CrossKD* memangkas jumlah parameter sebesar **88,4%** (dari 25,8 juta menjadi **3,0 juta parameter**) dan mengurangi beban komputasi dari 78,7 GFLOPs menjadi **8,1 GFLOPs**, sehingga sangat layak diimplementasikan pada perangkat dengan keterbatasan sumber daya komputasi (*edge devices*).
 
 ---
 
@@ -107,14 +107,14 @@ Seluruh eksperimen dilatih menggunakan konfigurasi standar (`imgsz=640`, `epochs
 
 ## Ringkasan Hasil Eksperimen
 
-Evaluasi dilakukan pada partisi validasi murni dataset RDD2022 (5.758 citra) dengan ukuran masukan `640 × 640` piksel:
+Evaluasi dilakukan pada partisi validasi murni dataset RDD2022 (5.758 citra) dengan ukuran masukan `640 × 640` piksel (merujuk pada Tabel 4.3 dan Tabel 4.4 Laporan Tugas Akhir untuk kategori *All Classes*):
 
-| Model | Arsitektur | Parameter | GFLOPs | Precision | Recall | mAP@50 | mAP@50-95 |
+| Model | Arsitektur | Parameter | GFLOPs | Precision (P) | Recall (R) | mAP@50 | mAP@50-95 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Teacher Standar (Exp 1)** | YOLOv8m | 25,8 M | 79,1 | 65,12% | 58,21% | 66,54% | 37,80% |
-| **Teacher Optimized (Exp 2)** | YOLOv8m | 25,8 M | 79,1 | 67,66% | 63,01% | **67,63%** | 38,47% |
-| **Student Baseline (Tanpa KD)** | YOLOv8n | 3,2 M | 8,7 | 66,55% | 59,57% | 65,01% | 36,03% |
-| **Student CrossKD (Usulan)** | **YOLOv8n** | **3,2 M** | **8,7** | **67,17%** | **59,75%** | **65,56%** | **36,27%** |
+| **Teacher Standar (Exp 1)** | YOLOv8m | 25,8 M | 78,7 | 0,6512 | 0,5821 | 66,54% | 37,80% |
+| **Teacher Optimized (Exp 2)** | YOLOv8m | 25,8 M | 78,7 | 0,6766 | 0,6301 | **67,63%** | **38,47%** |
+| **Student Baseline (Tanpa KD)** | YOLOv8n | 3,0 M | 8,1 | 0,6655 | 0,5976 | 65,01% | 36,03% |
+| **Student CrossKD (Usulan)** | **YOLOv8n** | **3,0 M** | **8,1** | **0,6717** | **0,5975** | **65,56%** | **36,27%** |
 
 ---
 
