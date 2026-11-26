@@ -8,7 +8,7 @@ Direktori ini menyimpan konfigurasi dan panduan penyiapan **Road Damage Dataset 
 
 Karena ukuran dataset penuh mencapai **13,5 GB** (melebihi batas penyimpanan standar repositori GitHub), dataset lengkap yang telah diproses dan siap latih dapat diunduh melalui Google Drive resmi penelitian berikut:
 
-**[Unduh Dataset RDD2022 Lengkap di Google Drive](https://drive.google.com/drive/folders/1UsrzEdO3pofb4GKN_XoiWIE5X5vvYEFK?usp=sharing)**
+**[Unduh Dataset RDD2022 Lengkap di Google Drive](https://drive.google.com/drive/folders/14NnNvZ-ByVG1dtyivK5xx6XkainRQce0?usp=drive_link)**
 
 Berkas arsip di Google Drive:
 - `dataset_rdd2022_augmented.zip` - Dataset siap latih (4 kelas utama + CLAHE + Resize 640×640 + Augmentasi *offline* pada split *train*).
