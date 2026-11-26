@@ -40,12 +40,6 @@ def transform_yolo_bbox(
         return class_id, 1.0 - x, y, w, h
     elif aug_type == "vflip":
         return class_id, x, 1.0 - y, w, h
-    elif aug_type == "rot90":
-        return class_id, 1.0 - y, x, h, w
-    elif aug_type == "rot180":
-        return class_id, 1.0 - x, 1.0 - y, w, h
-    elif aug_type == "rot270":
-        return class_id, y, 1.0 - x, h, w
     else:
         raise ValueError(f"Tipe augmentasi tidak dikenal: {aug_type}")
 
@@ -67,12 +61,6 @@ def apply_image_transform(img: np.ndarray, aug_type: str) -> np.ndarray:
         return cv2.flip(img, 1)
     elif aug_type == "vflip":
         return cv2.flip(img, 0)
-    elif aug_type == "rot90":
-        return cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
-    elif aug_type == "rot180":
-        return cv2.rotate(img, cv2.ROTATE_180)
-    elif aug_type == "rot270":
-        return cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
     else:
         raise ValueError(f"Transformasi tidak dikenal: {aug_type}")
 
@@ -333,7 +321,7 @@ def parse_args():
         "--augmentations",
         nargs="+",
         default=["hflip", "vflip"],
-        choices=["hflip", "vflip", "rot90", "rot180", "rot270"],
+        choices=["hflip", "vflip"],
         help="Daftar augmentasi untuk split train",
     )
     parser.add_argument("--include-empty-aug", action="store_true", help="Ikut augmentasi citra background kosong")
