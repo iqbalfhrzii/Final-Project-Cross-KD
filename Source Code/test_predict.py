@@ -10,62 +10,68 @@ MODEL_PATHS = {
 }
 
 CLASS_NAMES = {
-    0: 'D00: Longitudinal Crack (Retak Memanjang)',
-    1: 'D10: Transverse Crack (Retak Melintang)',
-    2: 'D20: Alligator Crack (Retak Buaya)',
-    3: 'D40: Pothole (Lubang Jalan)'
+    0: 'D00: Longitudinal Crack',
+    1: 'D10: Transverse Crack',
+    2: 'D20: Alligator Crack',
+    3: 'D40: Pothole'
 }
+
 
 def run_prediction(model_key, img_path, conf=0.25, iou=0.6):
     weights_path = MODEL_PATHS[model_key]
     if not os.path.exists(weights_path):
-        print(f"[-] Error: File bobot {weights_path} tidak ditemukan!")
+        print(f"Error: File bobot {weights_path} tidak ditemukan.")
         return
-    
-    print(f"\n{'='*65}")
-    print(f" MEMUAT MODEL: {model_key.upper()}")
-    print(f" File Bobot : {weights_path}")
-    print(f" Input Citra: {img_path}")
-    print(f" Parameter  : conf={conf}, iou={iou}")
-    print(f"{'='*65}")
-    
+
+    print(f"\nModel: {model_key.upper()} ({weights_path}) | Input: {img_path} | conf={conf}, iou={iou}")
+
     model = YOLO(weights_path)
-    res = model.predict(source=img_path, conf=conf, iou=iou, save=True, project='runs/predict_test', name=model_key, exist_ok=True, verbose=False)[0]
-    
+    res = model.predict(
+        source=img_path,
+        conf=conf,
+        iou=iou,
+        save=True,
+        project='runs/predict_test',
+        name=model_key,
+        exist_ok=True,
+        verbose=False,
+    )[0]
+
     boxes = res.boxes
     if len(boxes) == 0:
-        print("[!] Tidak ada kerusakan jalan yang terdeteksi dengan conf >= " + str(conf))
+        print(f"Tidak ada objek terdeteksi (conf >= {conf}).")
     else:
-        print(f"[+] Ditemukan {len(boxes)} objek kerusakan jalan:")
+        print(f"Terdeteksi {len(boxes)} objek:")
         for idx, box in enumerate(boxes):
             cls_id = int(box.cls[0])
             score = float(box.conf[0])
             c_name = CLASS_NAMES.get(cls_id, f"Class {cls_id}")
             xyxy = [round(float(x), 1) for x in box.xyxy[0]]
-            print(f"    {idx+1}. [{c_name}] -> Confidence: {score:.2f} ({score*100:.1f}%) | BBox [x1,y1,x2,y2]: {xyxy}")
-            
+            print(f"  {idx + 1}. {c_name} | conf: {score:.2f} | bbox: {xyxy}")
+
     saved_path = os.path.join('runs/predict_test', model_key, os.path.basename(img_path))
-    print(f"[>] Hasil citra visual tersimpan di: {saved_path}")
+    print(f"Output disimpan di: {saved_path}")
+
 
 def main():
-    parser = argparse.ArgumentParser(description="Uji Coba Inferensi Deteksi Kerusakan Jalan YOLOv8")
-    parser.add_argument('source', nargs='?', default='dataset_rdd2022_augmented/images/val/China_Drone_000142.jpg', help='Path ke foto jalan rusak')
-    parser.add_argument('--model', choices=['teacher', 'baseline', 'crosskd', 'all'], default='all', help='Pilih model yang ingin ditest')
-    parser.add_argument('--conf', type=float, default=0.25, help='Confidence threshold (default: 0.25)')
-    parser.add_argument('--iou', type=float, default=0.6, help='NMS IoU threshold (default: 0.6)')
-    
+    parser = argparse.ArgumentParser(description="Pengujian inferensi model deteksi kerusakan jalan YOLOv8")
+    parser.add_argument('source', nargs='?', default='dataset_rdd2022_augmented/images/val/China_Drone_000142.jpg', help='Path ke citra input')
+    parser.add_argument('--model', choices=['teacher', 'baseline', 'crosskd', 'all'], default='all', help='Model yang diuji')
+    parser.add_argument('--conf', type=float, default=0.25, help='Confidence threshold')
+    parser.add_argument('--iou', type=float, default=0.6, help='NMS IoU threshold')
+
     args = parser.parse_args()
-    
+
     if not os.path.exists(args.source):
-        print(f"[-] Error: File citra masukan '{args.source}' tidak ditemukan!")
+        print(f"Error: File citra '{args.source}' tidak ditemukan.")
         sys.exit(1)
-        
+
     if args.model == 'all':
         for m in ['teacher', 'baseline', 'crosskd']:
             run_prediction(m, args.source, conf=args.conf, iou=args.iou)
     else:
         run_prediction(args.model, args.source, conf=args.conf, iou=args.iou)
 
+
 if __name__ == '__main__':
     main()
-

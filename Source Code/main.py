@@ -1,8 +1,7 @@
-import os
+import argparse
 import sys
 from pathlib import Path
 
-# Pastikan encoding terminal Windows menggunakan UTF-8
 if sys.platform == "win32":
     try:
         sys.stdout.reconfigure(encoding="utf-8")
@@ -12,10 +11,6 @@ if sys.platform == "win32":
 
 from ultralytics import YOLO
 
-# ==============================================================================
-# KONFIGURASI TRAINING (RDD2022 4 CLASSES)
-# ==============================================================================
-# Jalur konfigurasi dataset RDD2022 (otomatis mendeteksi lokasi berkas)
 yaml_candidates = [
     Path("../Dataset/data.yaml"),
     Path("Dataset/data.yaml"),
@@ -24,28 +19,19 @@ yaml_candidates = [
 ]
 DATASET_YAML = str(next((p for p in yaml_candidates if p.exists()), Path("../Dataset/data.yaml")))
 
-# Default stage jika tanpa argumen: langsung melatih Teacher Optimized sesuai arahan dosen!
-# Pilihan: 'teacher_opt', 'auto_two_stage', 'teacher', 'student_kd', 'student_baseline', 'all'
 STAGE = "teacher_opt"
-
-# Hyperparameter Training (Disesuaikan 50 Epoch sesuai instruksi dosen)
 EPOCHS = 50
-PATIENCE = 50        # Set 50 agar menyelesaikan 50 epoch penuh (atau 20 jika ingin early stopping)
-CLOSE_MOSAIC = 10    # Matikan augmentasi mosaic pada 10 epoch terakhir untuk konvergensi presisi
+PATIENCE = 50
+CLOSE_MOSAIC = 10
 IMGSZ = 640
-BATCH_SIZE = 16      # Set 16 (atau 32 jika di RTX 4090 24GB)
-WORKERS = 8          # 8 worker optimal untuk Linux cloud instance (Vast.ai)
-DEVICE = 0           # 0 untuk GPU CUDA, atau 'cpu'
+BATCH_SIZE = 16
+WORKERS = 8
+DEVICE = 0
 
 
 def train_teacher():
-    """Tahap 1A: Melatih Model Teacher Standar (YOLOv8m - Eksperimen 1)."""
-    print("\n" + "=" * 60)
-    print(">>> MEMULAI TRAINING TEACHER STANDAR (YOLOv8m) <<<")
-    print(f"Data       : {DATASET_YAML}")
-    print(f"Batch Size : {BATCH_SIZE}")
-    print("AMP (FP16) : True")
-    print("=" * 60 + "\n")
+    """Training Teacher standar (YOLOv8m)."""
+    print(f"\n[Teacher Standar] Data: {DATASET_YAML}, Batch: {BATCH_SIZE}, Epochs: {EPOCHS}\n")
 
     model = YOLO("PretrainedModelFromOfficial/yolov8m.pt")
     model.train(
@@ -62,29 +48,12 @@ def train_teacher():
         quant=False,
         amp=True,
     )
-    print("\n[✓] Training Teacher YOLOv8m Standar Selesai!")
+    print("\nTraining Teacher standar selesai.")
 
 
 def train_teacher_optimized():
-    """Tahap 1B: Melatih Model Teacher Optimized (YOLOv8m - 50 Epoch).
-    Fitur Anti-Overfitting & Optimasi:
-    - epochs: 50 (Sesuai arahan dosen)
-    - patience: 50 (Menjamin training berjalan 50 epoch penuh)
-    - cos_lr: True (Cosine Annealing LR scheduler)
-    - close_mosaic: 10 (Matikan augmentasi mosaic pada 10 epoch terakhir)
-    - weight_decay: 0.001 (Regularisasi L2)
-    """
-    print("\n" + "=" * 60)
-    print(f">>> MEMULAI TRAINING TEACHER OPTIMIZED (YOLOv8m - {EPOCHS} EPOCH) <<<")
-    print(f"Data           : {DATASET_YAML}")
-    print(f"Epochs         : {EPOCHS}")
-    print(f"Batch Size     : {BATCH_SIZE}")
-    print(f"Patience       : {PATIENCE}")
-    print("Cosine LR      : True")
-    print(f"Close Mosaic   : {CLOSE_MOSAIC}")
-    print("Weight Decay   : 0.001 (L2 Regularization)")
-    print("AMP (FP16)     : True")
-    print("=" * 60 + "\n")
+    """Training Teacher dengan cosine LR, close mosaic, dan L2 regularization."""
+    print(f"\n[Teacher Optimized] Data: {DATASET_YAML}, Epochs: {EPOCHS}, Batch: {BATCH_SIZE}\n")
 
     model = YOLO("PretrainedModelFromOfficial/yolov8m.pt")
     model.train(
@@ -105,19 +74,12 @@ def train_teacher_optimized():
         quant=False,
         amp=True,
     )
-    print(f"\n[✓] Training Teacher YOLOv8m (Optimized {EPOCHS} Epoch) Selesai!")
+    print(f"\nTraining Teacher Optimized ({EPOCHS} epoch) selesai.")
 
 
 def train_student_baseline():
-    """Tahap 2: Baseline Student (YOLOv8n Standar Tanpa KD).
-    Krusial sebagai pembanding dasar untuk membuktikan efektivitas CrossKD.
-    """
-    print("\n" + "=" * 60)
-    print(">>> MEMULAI TRAINING STUDENT BASELINE (YOLOv8n Standar Tanpa KD) <<<")
-    print(f"Data       : {DATASET_YAML}")
-    print(f"Batch Size : {BATCH_SIZE}")
-    print("AMP (FP16) : True")
-    print("=" * 60 + "\n")
+    """Training Student baseline (YOLOv8n tanpa Knowledge Distillation)."""
+    print(f"\n[Student Baseline] Data: {DATASET_YAML}, Batch: {BATCH_SIZE}, Epochs: {EPOCHS}\n")
 
     model = YOLO("PretrainedModelFromOfficial/yolov8n.pt")
     model.train(
@@ -135,25 +97,15 @@ def train_student_baseline():
         quant=False,
         amp=True,
     )
-    print("\n[✓] Training Student Baseline YOLOv8n Selesai!")
+    print("\nTraining Student Baseline selesai.")
 
 
 def train_student_crosskd(teacher_weights_path: str):
-    """Tahap 3: Melatih Model Student (YOLOv8n) menggunakan CrossKD."""
-    print("\n" + "=" * 60)
-    print(">>> MEMULAI TRAINING STUDENT (YOLOv8n + CrossKD) <<<")
-    print(f"Teacher Weights : {teacher_weights_path}")
-    print(f"Data            : {DATASET_YAML}")
-    print(f"Batch Size      : {BATCH_SIZE}")
-    print("Cosine LR       : True")
-    print("AMP (FP16)      : True")
-    print("=" * 60 + "\n")
+    """Training Student (YOLOv8n) dengan Cross-Head Knowledge Distillation."""
+    print(f"\n[Student CrossKD] Teacher: {teacher_weights_path}, Data: {DATASET_YAML}\n")
 
     if not Path(teacher_weights_path).exists():
-        raise FileNotFoundError(
-            f"File bobot teacher tidak ditemukan di: {teacher_weights_path}\n"
-            "Pastikan Anda sudah melatih Teacher terlebih dahulu."
-        )
+        raise FileNotFoundError(f"Bobot teacher tidak ditemukan: {teacher_weights_path}")
 
     model = YOLO("PretrainedModelFromOfficial/yolov8n.pt")
     model.train(
@@ -175,123 +127,84 @@ def train_student_crosskd(teacher_weights_path: str):
         quant=False,
         amp=True,
     )
-    print("\n[✓] Training Student CrossKD Selesai!")
+    print("\nTraining Student CrossKD selesai.")
 
 
 def find_latest_teacher_weights():
-    """Mencari file bobot best.pt Teacher terbaru secara dinamis dari runs/detect/."""
-    candidates = []
     runs_dir = Path("runs/detect")
-    if runs_dir.exists():
-        # Cari semua best.pt di subfolder teacher (optimized, rdd2022, dll)
-        for p in runs_dir.glob("teacher_*/weights/best.pt"):
-            if p.is_file():
-                candidates.append(p)
-    
+    if not runs_dir.exists():
+        return None
+    candidates = [p for p in runs_dir.glob("teacher_*/weights/best.pt") if p.is_file()]
     if candidates:
-        # Urutkan berdasarkan waktu modifikasi terbaru
         candidates.sort(key=lambda x: x.stat().st_mtime, reverse=True)
         return str(candidates[0])
     return None
 
 
 def train_two_stage():
-    """Jalankan 2 Tahap Sekaligus secara Otomatis:
-    1. Melatih Teacher YOLOv8m (Optimized Anti-Overfitting)
-    2. Langsung melatih Student YOLOv8n (CrossKD) dibimbing bobot best.pt Teacher!
-    """
-    print("\n" + "=" * 70)
-    print(">>> MEMULAI EKSEKUSI PIPELINE 2 TAHAP SEKALIGUS (TEACHER -> STUDENT) <<<")
-    print("=" * 70 + "\n")
-
-    # Langkah 1: Training Teacher
+    """Menjalankan training Teacher Optimized dilanjutkan Student CrossKD."""
     train_teacher_optimized()
 
-    # Cari bobot best.pt Teacher secara dinamis
     teacher_best_str = find_latest_teacher_weights()
-    if teacher_best_str and Path(teacher_best_str).exists():
-        teacher_best = Path(teacher_best_str)
-    else:
-        teacher_best = Path("runs/detect/teacher_yolov8m_optimized/weights/best.pt")
+    teacher_best = (
+        Path(teacher_best_str)
+        if teacher_best_str and Path(teacher_best_str).exists()
+        else Path("runs/detect/teacher_yolov8m_optimized/weights/best.pt")
+    )
 
     if not teacher_best.exists():
-        print(f"\n[!] Error: File bobot Teacher '{teacher_best}' tidak ditemukan!")
-        print("    Training Student CrossKD tidak dapat dimulai otomatis.")
+        print(f"\nError: Bobot Teacher '{teacher_best}' tidak ditemukan.")
         return
 
-    print("\n" + "=" * 70)
-    print(f">>> TAHAP 1 (TEACHER) SELESAI! BOBOT TERBAIK: {teacher_best} <<<")
-    print(">>> LANGSUNG MEMULAI TAHAP 2: STUDENT (YOLOv8n + CrossKD) <<<")
-    print("=" * 70 + "\n")
-
-    # Langkah 2: Training Student CrossKD
+    print(f"\nTeacher selesai ({teacher_best}). Lanjut training Student CrossKD...")
     train_student_crosskd(str(teacher_best))
-
-    print("\n" + "=" * 70)
-    print(">>> SELURUH TRAINING SELESAI 100%! <<<")
-    print(f"1. Teacher Model : {teacher_best}")
-    print("2. Student Model : runs/detect/student_crosskd_yolov8n_rdd2022/weights/best.pt")
-    print("=" * 70 + "\n")
+    print("\nSeluruh pipeline two-stage selesai.")
 
 
 if __name__ == "__main__":
-    import argparse
-
     parser = argparse.ArgumentParser(description="Training Pipeline YOLOv8 & CrossKD (RDD2022)")
     parser.add_argument(
         "--stage",
         type=str,
         default=STAGE,
         choices=["auto_two_stage", "teacher_opt", "teacher", "student_baseline", "student_kd", "all"],
-        help="Mode eksekusi: auto_two_stage, teacher_opt, teacher, student_baseline, student_kd, all",
+        help="Stage training yang dijalankan",
     )
     parser.add_argument(
         "--teacher-weights",
         type=str,
         default=None,
-        help="Path ke bobot best.pt Teacher (jika menjalankan student_kd secara mandiri)",
+        help="Path ke bobot best.pt Teacher untuk stage student_kd",
     )
     parser.add_argument("--batch", type=int, default=BATCH_SIZE, help="Ukuran batch")
     parser.add_argument("--workers", type=int, default=WORKERS, help="Jumlah worker dataloader")
-    parser.add_argument("--epochs", type=int, default=EPOCHS, help="Jumlah epoch training (default: 50)")
-    parser.add_argument("--patience", type=int, default=PATIENCE, help="Early stopping patience (default: 50)")
-    parser.add_argument("--close-mosaic", type=int, default=CLOSE_MOSAIC, help="Jumlah epoch terakhir nonaktifkan mosaic (default: 10)")
+    parser.add_argument("--epochs", type=int, default=EPOCHS, help="Jumlah epoch training")
+    parser.add_argument("--patience", type=int, default=PATIENCE, help="Early stopping patience")
+    parser.add_argument("--close-mosaic", type=int, default=CLOSE_MOSAIC, help="Epoch terakhir nonaktifkan mosaic")
     args = parser.parse_args()
 
-    # Perbarui konfigurasi dari argumen CLI
     BATCH_SIZE = args.batch
     WORKERS = args.workers
     EPOCHS = args.epochs
     PATIENCE = args.patience
     CLOSE_MOSAIC = args.close_mosaic
-    selected_stage = args.stage
 
-    # Cek ketersediaan dataset
     if not Path(DATASET_YAML).exists():
-        print(f"[!] Warning: File '{DATASET_YAML}' belum ditemukan.")
-        print("    Jalankan 'process_rdd2022.py' atau 'preprocess_and_augment.py' terlebih dahulu.")
+        print(f"Warning: File '{DATASET_YAML}' tidak ditemukan.")
 
-    if selected_stage == "auto_two_stage":
+    if args.stage == "auto_two_stage":
         train_two_stage()
-
-    elif selected_stage == "teacher_opt":
+    elif args.stage == "teacher_opt":
         train_teacher_optimized()
-
-    elif selected_stage == "teacher":
+    elif args.stage == "teacher":
         train_teacher()
-
-    elif selected_stage == "student_baseline":
+    elif args.stage == "student_baseline":
         train_student_baseline()
-
-    elif selected_stage == "student_kd":
-        t_weights = args.teacher_weights
+    elif args.stage == "student_kd":
+        t_weights = args.teacher_weights or find_latest_teacher_weights()
         if not t_weights:
-            t_weights = find_latest_teacher_weights()
-            if not t_weights:
-                t_weights = "runs/detect/teacher_yolov8m_optimized/weights/best.pt"
+            t_weights = "runs/detect/teacher_yolov8m_optimized/weights/best.pt"
         train_student_crosskd(t_weights)
-
-    elif selected_stage == "all":
+    elif args.stage == "all":
         train_two_stage()
         train_student_baseline()
-
