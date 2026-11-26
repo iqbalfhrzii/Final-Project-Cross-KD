@@ -36,20 +36,40 @@ Dataset/
 ---
 
 ## 🏷️ Spesifikasi 4 Kelas Kerusakan Jalan
-Dataset asli RDD2022 yang terdiri dari 5 kelas diproses ulang menggunakan skrip `process_rdd2022.py` untuk mengeliminasi kelas ke-5 (*Other/Repair*) dan memetakan ulang (*remapping*) label menjadi 4 kategori utama:
 
-| Class ID | Kode Kerusakan | Nama Kerusakan (Inggris) | Nama Kerusakan (Indonesia) | Ciri Visual Utama |
-| :---: | :---: | :--- | :--- | :--- |
-| **0** | **D00** | *Longitudinal Crack* | Retak Memanjang | Alur retakan linear sejajar arah jalur lalu lintas |
-| **1** | **D10** | *Transverse Crack* | Retak Melintang | Alur retakan linear tegak lurus arah jalur lalu lintas |
-| **2** | **D20** | *Alligator Crack* | Retak Buaya | Pola retak jaring poligonal menyerupai kulit buaya |
-| **3** | **D40** | *Pothole* | Lubang Jalan | Cekungan struktural aspal dengan bayangan depresi |
+Dataset mentah RDD2022 yang semula memuat kelas tambahan (*Other Corruption / Repair*) diproses ulang menggunakan skrip `Source Code/process_rdd2022.py` untuk mengeliminasi kelas di luar fokus penelitian dan memetakan ulang (*remapping*) indeks kelas ke rentang `0–3` sesuai standar *benchmark* internasional RDD2022:
+
+| Class ID | Kode Kelas | Nama Kerusakan | Deskripsi Fisik |
+| :---: | :---: | :--- | :--- |
+| **0** | **D00** | *Longitudinal Crack* | Retakan linier memanjang searah sumbu/lajur jalan |
+| **1** | **D10** | *Transverse Crack* | Retakan linier melintang tegak lurus memotong sumbu jalan |
+| **2** | **D20** | *Alligator Crack* | Retakan menyerupai sisik buaya (jaring retak saling terhubung) |
+| **3** | **D40** | *Pothole* | Lubang jalan atau cekungan degradasi permukaan aspal |
+
+*(Catatan: Citra yang tidak lagi memiliki bounding box setelah pemfilteran tetap dipertahankan sebagai background images untuk menekan tingkat False Positive).*
 
 ---
 
-## ⚙️ Skrip Pengolahan Data
-Jika Anda memiliki data mentah RDD2022 dan ingin mereplikasi proses pemfilteran dan augmentasi secara mandiri:
-1. **Pemfilteran & Remapping 4 Kelas:**  
-   Jalankan `python "Source Code/process_rdd2022.py"`
-2. **Peningkatan Kontras CLAHE & Augmentasi:**  
-   Jalankan `python "Source Code/preprocess_and_augment.py"`
+## ⚙️ Rangkuman Pipeline Pengolahan & Statistik Data
+
+Seluruh pemrosesan citra dilakukan menggunakan skrip `Source Code/preprocess_and_augment.py` dengan tahapan:
+- **Enhancement (CLAHE):** Diterapkan secara eksklusif pada kanal *Luminance* (`L`) dalam ruang warna `LAB` dengan parameter `clipLimit = 2.0` dan `tileGridSize = (8, 8)` untuk memperjelas tekstur retakan tanpa merusak informasi warna alami.
+- **Standardisasi Dimensi (Resize):** Seluruh citra diseragamkan menjadi resolusi `640 × 640` piksel menggunakan interpolasi bilinear.
+- **Augmentasi Data Offline:** Diterapkan hanya pada partisi `train` menggunakan teknik *Horizontal Flip* dan *Vertical Flip* beserta rekalkulasi koordinat *bounding box*. Partisi `val` dan `test` dipertahankan murni untuk mencegah kebocoran data (*data leakage*).
+
+### Rekapitulasi Distribusi Citra & Label
+
+| Split Dataset | Citra Awal | Citra Akhir | Label Terfilter (4 Kelas) | Label Akhir (Training-Ready) | Keterangan |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| **Train** | 26.869 | 62.673 | 41.668 | 142.504 | CLAHE + Resize + Offline Flip (H/V) |
+| **Validation** | 5.758 | 5.758 | 9.366 | 9.366 | Hanya CLAHE + Resize (Murni) |
+| **Test** | 5.758 | 5.758 | 9.324 | 9.324 | Hanya CLAHE + Resize (Murni) |
+| **Total** | **38.385** | **74.189** | **60.358** | **161.194** | — |
+
+---
+
+## 📚 Sitasi Dataset Asli
+
+Apabila menggunakan dataset ini, harap menyertakan sitasi sumber asli RDD2022:
+
+> Arya, D., Maeda, H., Sekimoto, Y., Ghosh, S. K., & Toshniwal, D. (2022). *RDD2022: A Multi-National Image Dataset for Automatic Road Damage Detection*. figshare. https://doi.org/10.6084/m9.figshare.19425179
