@@ -14,7 +14,7 @@ Repositori ini memuat kode sumber resmi, konfigurasi eksperimen, dan dokumentasi
 
 ## Ringkasan Penelitian
 
-Penelitian ini mengimplementasikan metode **Cross-Head Knowledge Distillation (CrossKD)** untuk mentransfer representasi fitur spasial dan prediksi *detection head* dari model guru berkapasitas besar (*Teacher* — **YOLOv8m**, 25,8 juta parameter) ke model murid berarsitektur ringkas (*Student* — **YOLOv8n**, 3,0 juta parameter) dalam mendeteksi empat kategori kerusakan jalan pada dataset multinasional **RDD2022**:
+Penelitian ini mengimplementasikan metode **Cross-Head Knowledge Distillation (CrossKD)** untuk mentransfer representasi fitur spasial dan prediksi *detection head* dari model guru berkapasitas besar (*Teacher* - **YOLOv8m**, 25,8 juta parameter) ke model murid berarsitektur ringkas (*Student* - **YOLOv8n**, 3,0 juta parameter) dalam mendeteksi empat kategori kerusakan jalan pada dataset multinasional **RDD2022**:
 
 1. **D00:** Retak Memanjang (*Longitudinal Crack*)
 2. **D10:** Retak Melintang (*Transverse Crack*)
