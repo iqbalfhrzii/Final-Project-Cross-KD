@@ -124,3 +124,10 @@ Evaluasi dilakukan pada partisi validasi murni dataset RDD2022 (5.758 citra) den
 - **CPU:** AMD Ryzen 9 7950X3D (16 Cores, 32 Threads)
 - **RAM:** 64 GB DDR5
 - **Framework:** Python 3.10, PyTorch, Ultralytics YOLOv8 (Modified with CrossKD)
+
+---
+
+## Referensi
+
+- **Metode & Teori CrossKD:** Wang, J., Chen, Y., Zheng, Z., Li, X., Cheng, M.-M., & Hou, Q. (2024). *CrossKD: Cross-Head Knowledge Distillation for Object Detection* (arXiv:2306.11369 / [jbwang1997/CrossKD](https://github.com/jbwang1997/CrossKD)).
+- **Basis Implementasi YOLOv8-KD:** Adaptasi struktur kode integrasi Knowledge Distillation pada YOLOv8 (`ultralytics/` dan `OtherKD/`) merujuk pada repositori [KefanZhan/YOLOv8-KD](https://github.com/KefanZhan/YOLOv8-KD) (*Knowledge Distillation via Cross Supervising with Attention for Remote Sensing Object Detection*, Zhan et al., 2025), dengan fokus penggunaan modul `CrossKD` untuk skenario penelitian ini.
